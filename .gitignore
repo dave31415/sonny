@@ -1,4 +1,5 @@
 *.log
 *.aux
 *.tex~
-*.pdf
+.gitignore
+.gitignore~
