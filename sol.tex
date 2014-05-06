@@ -1,0 +1,134 @@
+\documentclass[12pt]{article}
+
+\usepackage{epsfig}
+\usepackage{graphics}
+\usepackage{color}
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{Solution: Sonny Bayes Robs a Train} 
+\author{David Johnston \\ThoughtWorks\\dajohnst@thoughtworks.com}
+\maketitle
+
+\section{A Bayesian Approach}
+
+I know of no way of solving this problem without using a Bayesian approach. Some people will
+get the problem right without knowing anything about Bayes theorem but that's because people
+usually think in a Bayesian way naturally. 
+
+This problem demonstrates most starkly the need to introduce a reasonable prior distribution. 
+Let's introduce the three variables that define the problem. Let $x$, denote the unknown amount of gold initially 
+loaded into each of the trains. We'll make it an integer in dollars just so we can avoid integrals. 
+Therefore one of the running trains has $x$ amount of gold and the other has $2x$. 
+Let us also define another parameter $L$, a Boolean defining their Luck. $L$ is True if their random guess resulted
+in them arriving first at the train with more gold and False otherwise. Finally, there is $D$, the estimated
+amount of gold they will find in the first train. $L$ and $x$ are independent variables. There is no reason that
+their random guess at a train will be affected by the amount of gold put into the trains. 
+However they are \emph{conditionally} dependent on $D$ by the knowledge that one trains has twice as
+much gold as the other. 
+
+\section{The General Solution}
+
+We will proceed by writing down the probability that we desire and apply Bayes theorem to get someting that
+we can calculate numerically. We are interested in the posterior probability of $L$ given the new data. This is 
+actually a marginal distribution; marginalized over x.
+\begin{equation}
+P(L | D) = \sum_x P(L, x | D)
+\end{equation}
+Now we can apply Bayes theorem to $P(L,x | D)$
+\begin{eqnarray}
+P(L, x | D) &=& P(D | L, x) P(L,x) / P(D)\\
+&\propto& P(D | L, x) P(L) P(x)
+\end{eqnarray}
+and so 
+\begin{eqnarray}
+P(L | D) & \propto &\sum_x P(D | L, x) P(L) P(x) \\
+P(L | D) & \propto &\sum_x P(D | L, x) P(x)
+\end{eqnarray}
+
+As is common, we don't care about the normalization constant $P(D)$ so we throw it away and change it from an equation to 
+a proprtionality statement. If that is confusing, you can keep it. You will see that it will drop out anyway. 
+We use the independence of $L$ and $x$ in saying $P(L,x) = P(L) P(x)$. We chose the first train at random which implies $P(L) =0.5$ for both values 
+of $L$. It's just another constant factor and so we dropped it from the above equation. 
+
+This is now in a form that we can work with. That is, we can logically assign numbers to each of these three terms 
+in the sum from the information given in the story. 
+
+Let's start with $P(D | L,x)$. This is called the likelihood of the data. What is the value of this term? It's usualy
+helpful to spell these things out in words. This is: What is the probability of observing D=10 (or any amount) 
+given that we know $L$ and also know $x$. For example, if $x=5$ million and $L=True$, the probability is 1 
+because we were lucky to choose the best train and 2 times $x=5$ is 10. For any other value of $x$ it will be zero. 
+If instead we know $L=False$, this will be zero for every value except when $x=10$. 
+
+Finally, there is $P(x)$. This is the prior distrubution on $x$. It embodies our expectation of the value of $x$ before 
+receiving the new data that there is 10 million worth of gold on one of the trains. Often, it is the case that the 
+prior is not \emph{that} important and, in fact, it gets less important as you add more data. But in this problem there is 
+no more data to be had and so the prior determines the problem entirely. 
+
+Let's get back to our equation and calculate $P(L | D)$ for each of the possible values of $L$ which are True and False.
+As stated $P(D| L,x)$ is 1 for only one value, depending on $L$ and zero for every other and so our sum collapse down 
+to a single term. 
+
+$P(L|D) \propto
+\begin{cases}
+
+  P(x=D/2), & \text{if } L = True, \\
+  P(x=D), & \text{otherwise}.
+\end{cases}$
+ 
+Now we know (assuming we trust our informant) that $P(L= True | D) + P(L= False | D) =1$ because, 
+regardless of the data, we know that $L$ is either True or False and so the properly normalized $P(L | D)$, 
+for either $L$, is clearly. 
+
+\begin{equation}
+P(L | D) = \frac{P(L | D)}{P(L=True | D) + P(L=False | D)}
+\end{equation}
+
+So for example, 
+\begin{equation}
+P(L=True | D) = \frac{1}{1+\frac{P(L=False | D)}{P(L=True|D)}}
+\end{equation}
+The last step in the formal solution is to plug in the value of this ratio. Again notice how any
+common constant factors would have dropped out in this ratio.  
+\begin{equation}
+P(L=True | D) = \frac{1}{1+\frac{P(x=D)}{P(x=D/2)}}
+\label{eq:final}
+\end{equation}
+As mentioned before, the answer of whether $P(L=True | D)$ (we should take the gold) is greater than
+$P(L=False | D)$ (we should rob the other train) depends entirely on our prior distribution evaluated at 
+our one data point, $D=10$, and half that value. 
+
+\section{Apply the Prior}
+By now, we see that everything depends on our prior. But what should we use for that? If we had no information
+at all, we would be in a pinch. Using a uniform prior would result in $P(L=False | D)=0.5$ regardless of the data. 
+Fortunately we do have prior information as we have seen the amount of gold on three other attempts. Even so, we
+have to make some assumptions about the smoothness of the prior or adapt some functional form. For simplicity, we
+can start with the normal distribution, $P(x) \propto \exp(-0.5 \left[(x-\mu)/\sigma \right]^2)$ (though log-normal 
+might make more sense). From the sample, we can see that the mean $\mu$ is about 11.1 and the standard deviation 
+$\sigma$ is about 3. Using a little algebra, it is easy to show 
+\begin{equation}
+P(L=True | D) = \frac{1}{1+ \exp \left(D [\mu- 3 D/4]/(2 \sigma^2)\right)}
+\label{eq:crit}
+\end{equation}
+
+Finally, we can see what the true professional would do. All that matters is whether $P(L=True | D)$ is less than 0.5.
+If it is, they are more likely to get more gold by robbing the other train. If not, they take the gold on the first train. 
+Note that this is completely determined by the sign of $[\mu- 3 D/4]$ in the expression above. If $D < 4/3 \mu$, they are
+better off switching to the other train. Since they know that $\mu=11.1$ before they even pick a train, they should know
+that all they need to do is determine whether the first train has more than 11.1*4/3=14.8 million in gold. As soon as they 
+determine that, they can decide what to do. 
+
+In this case $D=10 < 14.8$ so it is better to rob the other train. What's the probability of success? Now that 
+involves $\sigma$ as well. Plugging this in to the above with $\sigma=3$ gives us $P(L=True | D) = 0.12$. 
+Thus, they have an $88\%$ chance of success if they switch. 
+
+
+ 
+
+
+
+ 
+
+
+\end{document}

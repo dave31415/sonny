@@ -149,11 +149,41 @@ than this, we should keep the gold and not rob the second train.
 If these train robbers we're true professionals and considered real risks of being successful, they would perform 
 the following calculation for the cut-off value for the gold on the first train. If the amount was clearly less than the
 cut-off value, they could leave immediately and rob the other train. If the opposite were true, they would just pack it up.
-If it was unclear, they could count it and then decide. 
+If it was unclear, they could count it and then decide. There is also the concept of utility to consider.
 
 \subsection{utility function}
 
+We have been assuming that the measure they want to maximize is the expectation value of the amount they will
+steal. In reality, people's preferences are usually more complex than that. People also care about volatility/risk 
+and they often have a preference for money or any other measureable thing that is non-linear. This is known
+as utility. In the example above the utility as a function of $x$ is simply $U(x) = x$. It could be some 
+other function. 
+
+If you won a billion dollars, would you then accept a 50-50 coin toss where 
+you either lose your billion dollars or win 5 more billion?  
+If all you cared about was maximizing your expectation value, you should. But any sane person who is not already
+a billionaire would reject this because they would likely conclude that their life wouldn't be terribly different 
+with 5 billion instead of 1 but that there would be a huge difference from their current middle class lifestyle and
+that of a billionaire. You'd almost certainly decline that offer.  
+
+In regards to this problem, the train robbers would probably come to the same conclusion that 5 versus 10 is a 
+bigger difference than 10 versus 20. The curve, which may vary from person to person, 
+is usually concave, resembling the curve $U(x) = \sqrt{x}$ or something like it.   
+
 \subsection{factoring in risk}
+
+To make this train robbery example more realistic, we would have to factor in that there is some risk that
+if they leave the first train, they will get caught trying to sneak onto the second one. Presumably they
+considered this risk before even robbing the first one.  
+
+Let's say they conclude that they agree that there is a 10\% chance of getting caught
+and that they concluded that it would be worth that risk if they each
+got 1 million each so they need to find 3 million on the train to 
+make it worth it. Based on their past experienced, they expect to find
+at least that much and so they move ahead with the robery. This cut
+off point of 3 million allows us to assign a negative utility to the
+getting caught scenario of -3 million. 
+
 
 \section{Conclusion: What we have learned}
 
