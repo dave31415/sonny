@@ -1,7 +1,7 @@
 Though Buster's logic is incorrect, he is right that they should switch and rob the other 
-train. The important piece of evidence that they are all ignoring is the fact
+train. The important piece of evidence that they're ignoring is the fact
 that they have useful prior information from their three previous robbery attempts. The
-average value they have seen in the past is 11.1 million in gold with a standard deviation 
+average value they have seen in the past is 11.1 million dollars in gold with a standard deviation 
 of about 3. We can use this information to make the right decision. 
 
 If they have picked the right train on their first guess, the amount
@@ -10,13 +10,15 @@ have not picked the right train, it means that the original value was 10 million
 train now has 20 million. So the original value is either 5 or 10. 
 
 Which is more likely? Well, both 5 and 10 are less than the past average of 11.2 but 10 is 
-certainly closer. The least amount they had seen before is 7; 5 is about 2 standard deviations
+certainly closer. The least amount they had seen before is 7, so 5 is about 2 standard deviations
 below the mean. So, it seems that the original amount being 5 would be the less likely scenario. 
 It is more likely that it was 10 and that the other train now has 20. 
 
 What would true professionals do? They would know in advance what the cut-off value 
-should be when they count the gold on the first train and if it is less than that value, they
-should switch trains immediately. What is the cut-off value? You might think that it is 11.1 but that 
+should be before heading off to the train. Then, when they count the gold on the first train,
+they can make a decision immediately depending on whether it is more or less than the cut-off value.
+
+What is the cut-off value? You might think that it is 11.1 but that 
 actually isn't correct. In fact, it requires a few more assumptions about the form of the
 prior distribution and the use of Bayesian statistics. If we assume it is a normal distribution, 
 you can show that the cut-off value is 4/3 times the mean of 11.1 or 14.8 and that switching will
@@ -24,11 +26,10 @@ be the right choice about 80% of the time. The full solution is posted here.
 https://github.com/dave31415/sonny/blob/master/sol.pdf
 
 Congrats to our best train robbers for coming to the right conclusion.
-(Make sure we aren't missing some)
 Shraddha Surana
 Mahesh SNV 
 John Napier
 Kevin Dishman
 Hugo Corbucci
-
+Nikesh Vara
 
