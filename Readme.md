@@ -1,5 +1,7 @@
 Sonny Bayes
-===============You are a train robber named Sonny Bayes. You have an informant inside the central 
+===============
+
+You are a train robber named Sonny Bayes. You have an informant inside the central 
 bank who alerts you there are three trains leaving the bank on a certain day carrying 
 large and equal amounts of gold to the three regional banks. You and your buddies 
 Buster and Shane will help you rob the trains. 
